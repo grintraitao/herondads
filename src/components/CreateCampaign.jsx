@@ -4,7 +4,8 @@ import {
   ADGROUP_TYPES,
   PRICING_MODELS,
   TARGET_TABS,
-  REGIONS,
+  TARGETING_OPTIONS,
+  TARGETING_NOUN,
   AD_TYPES,
 } from '../data/create.js'
 import {
@@ -217,12 +218,25 @@ function CreativePreview({ adType }) {
 }
 
 export default function CreateCampaign({ state, set }) {
-  const { openStep, campaignName, adgroupName, adgroupType, pricing, targetTab, selectedGeo, adType } = state
+  const { openStep, campaignName, adgroupName, adgroupType, pricing, targetTab, selected, adType } = state
 
   const toggle = (n) => () => set({ openStep: openStep === n ? 0 : n })
   const curAg = ADGROUP_TYPES.find((a) => a[0] === adgroupType) || ADGROUP_TYPES[4]
-  const targetTabLabel = (TARGET_TABS.find((t) => t[0] === targetTab) || TARGET_TABS[0])[1]
+  const curTab = TARGET_TABS.find((t) => t[0] === targetTab) || TARGET_TABS[0]
+  const targetTabLabel = curTab[1]
+  const targetTabIcon = curTab[2]
   const adTypeLabel = (AD_TYPES.find((a) => a[0] === adType) || AD_TYPES[2])[1]
+
+  // Targeting options + selection are per-tab (Geo / Language / OS / Sources).
+  const targetOptions = TARGETING_OPTIONS[targetTab] || []
+  const chosen = selected[targetTab] || []
+  const toggleTarget = (item) =>
+    set({
+      selected: {
+        ...selected,
+        [targetTab]: chosen.includes(item) ? chosen.filter((x) => x !== item) : [...chosen, item],
+      },
+    })
 
   return (
     <div style={css('max-width:1000px;margin:0 auto;animation:fadeUp .35s ease both;')}>
@@ -344,32 +358,24 @@ export default function CreateCampaign({ state, set }) {
               </div>
               <div>
                 <div className="ov" style={css('color:var(--text-tertiary);margin-bottom:10px;display:flex;align-items:center;gap:6px;')}>
-                  <Icon name="globe" style={css('color:var(--color-primary);font-size:14px;')} /> {targetTabLabel}
+                  <Icon name={targetTabIcon} style={css('color:var(--color-primary);font-size:14px;')} /> {targetTabLabel}
                 </div>
                 <div
                   style={css(
                     'display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid var(--border-default);background:#fff;margin-bottom:10px;font-size:13px;color:var(--text-tertiary);',
                   )}
                 >
-                  <Icon name="search" /> Search
+                  <Icon name="search" /> Search {targetTabLabel.toLowerCase()}
                 </div>
                 <div style={css('display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;')}>
-                  {REGIONS.map((regionName) => {
-                    const sel = selectedGeo.includes(regionName)
+                  {targetOptions.map((item) => {
+                    const sel = chosen.includes(item)
                     return (
-                      <button
-                        key={regionName}
-                        onClick={() =>
-                          set({
-                            selectedGeo: sel
-                              ? selectedGeo.filter((g) => g !== regionName)
-                              : [...selectedGeo, regionName],
-                          })
-                        }
-                        style={css(geoRow(sel))}
-                      >
-                        <Icon name="chevron-down" style={css('color:var(--text-tertiary);font-size:14px;')} />
-                        <span style={css('flex:1;text-align:left;')}>{regionName}</span>
+                      <button key={item} onClick={() => toggleTarget(item)} style={css(geoRow(sel))}>
+                        {targetTab === 'geo' && (
+                          <Icon name="chevron-down" style={css('color:var(--text-tertiary);font-size:14px;')} />
+                        )}
+                        <span style={css('flex:1;text-align:left;')}>{item}</span>
                         <Icon
                           name={sel ? 'check-circle' : 'plus-circle'}
                           style={css(`color:${sel ? 'var(--color-primary)' : 'var(--text-tertiary)'};font-size:15px;`)}
@@ -388,17 +394,17 @@ export default function CreateCampaign({ state, set }) {
                     'border-radius:12px;border:1px solid rgba(51,115,246,.18);background:rgba(51,115,246,.04);min-height:240px;padding:12px;display:flex;flex-direction:column;gap:8px;',
                   )}
                 >
-                  {selectedGeo.length > 0 ? (
-                    selectedGeo.map((regionName) => (
+                  {chosen.length > 0 ? (
+                    chosen.map((item) => (
                       <div
-                        key={regionName}
+                        key={item}
                         style={css(
                           'display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;background:#fff;border:1px solid var(--border-default);font-size:13px;font-weight:600;',
                         )}
                       >
-                        <span style={css('flex:1;')}>{regionName}</span>
+                        <span style={css('flex:1;')}>{item}</span>
                         <button
-                          onClick={() => set({ selectedGeo: selectedGeo.filter((g) => g !== regionName) })}
+                          onClick={() => toggleTarget(item)}
                           style={css('border:none;background:none;color:var(--text-tertiary);cursor:pointer;')}
                         >
                           <Icon name="x" style={css('font-size:15px;')} />
@@ -411,9 +417,9 @@ export default function CreateCampaign({ state, set }) {
                         'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-tertiary);gap:8px;text-align:center;',
                       )}
                     >
-                      <Icon name="globe" style={css('font-size:26px;')} />
+                      <Icon name={targetTabIcon} style={css('font-size:26px;')} />
                       <span style={css('font-size:13px;')}>
-                        Pick regions on the left to
+                        Pick {TARGETING_NOUN[targetTab]} on the left to
                         <br />
                         build your targeting
                       </span>

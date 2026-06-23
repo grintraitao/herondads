@@ -19,7 +19,7 @@ const INITIAL = {
   adgroupType: 'manual',
   pricing: 'cpm',
   targetTab: 'geo',
-  selectedGeo: [],
+  selected: { geo: [], language: [], os: [], sources: [] },
   adType: 'image',
 }
 

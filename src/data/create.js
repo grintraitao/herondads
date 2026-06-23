@@ -47,6 +47,35 @@ export const REGIONS = [
   'Northern Europe', 'Polynesia', 'South-Eastern Asia', 'Southern Asia', 'Sub-Saharan Africa', 'Western Asia',
 ]
 
+export const LANGUAGES = [
+  'English', 'Spanish', 'Mandarin Chinese', 'Hindi', 'Arabic', 'Portuguese', 'Russian', 'Japanese',
+  'French', 'German', 'Korean', 'Vietnamese', 'Turkish', 'Indonesian', 'Italian',
+]
+
+export const OPERATING_SYSTEMS = [
+  'Windows', 'macOS', 'Linux', 'Android', 'iOS', 'Chrome OS', 'HarmonyOS', 'Other',
+]
+
+export const SOURCES = [
+  'Herond Browser', 'Premium Publishers', 'News & Media', 'Crypto & Web3 Sites', 'Streaming & Video',
+  'Push Notifications', 'Native Widgets', 'In-App Network', 'Search Partners', 'Social Embeds',
+]
+
+// Options per Targeting tab, plus the noun used in each tab's empty state.
+export const TARGETING_OPTIONS = {
+  geo: REGIONS,
+  language: LANGUAGES,
+  os: OPERATING_SYSTEMS,
+  sources: SOURCES,
+}
+
+export const TARGETING_NOUN = {
+  geo: 'regions',
+  language: 'languages',
+  os: 'operating systems',
+  sources: 'traffic sources',
+}
+
 // [key, label, icon, color]
 export const AD_TYPES = [
   ['text', 'Text Ad', 'type', '#3373F6'],
