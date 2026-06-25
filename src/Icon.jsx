@@ -1,4 +1,5 @@
 import {
+  ArrowLeft,
   ArrowRight,
   BadgeDollarSign,
   BarChart3,
@@ -35,6 +36,7 @@ import {
   Percent,
   Plus,
   PlusCircle,
+  Presentation,
   Radar,
   RotateCcw,
   Search,
@@ -54,6 +56,7 @@ import {
 // Only the icons the design actually uses — a static map keeps tree-shaking
 // working (an `import * as` + dynamic lookup would bundle all of lucide).
 const ICONS = {
+  'arrow-left': ArrowLeft,
   'arrow-right': ArrowRight,
   'badge-dollar-sign': BadgeDollarSign,
   'bar-chart-3': BarChart3,
@@ -90,6 +93,7 @@ const ICONS = {
   percent: Percent,
   plus: Plus,
   'plus-circle': PlusCircle,
+  presentation: Presentation,
   radar: Radar,
   'rotate-ccw': RotateCcw,
   search: Search,
