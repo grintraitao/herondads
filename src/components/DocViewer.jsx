@@ -2,33 +2,27 @@ import { useNavigate, useParams } from 'react-router-dom'
 import css from '../css.js'
 import Icon from '../Icon.jsx'
 
-const SRC = {
-  en: '/business-model/en.html',
-  vi: '/business-model/vi.html',
-}
-
+// Renders a self-contained bilingual HTML deck in an isolated iframe.
 // Language is encoded in the URL so a link can be shared in a specific language:
-//   /business_model        -> English (default)
-//   /business_model/vn     -> Vietnamese  (also accepts /vi)
-// [code, label, path]
-const LANGS = [
-  ['en', 'EN', '/business_model'],
-  ['vi', 'VI', '/business_model/vn'],
-]
-
-// Renders the self-contained business-model deck in an isolated iframe,
-// with a URL-driven language toggle (default English) and a way back.
-export default function BusinessModel() {
+//   {basePath}        -> English (default)
+//   {basePath}/vn     -> Vietnamese  (also accepts /vi)
+// Files live in {srcDir}/en.html and {srcDir}/vi.html under public/.
+export default function DocViewer({ title, srcDir, basePath }) {
   const { lang } = useParams()
   const navigate = useNavigate()
   const code = lang === 'vn' || lang === 'vi' ? 'vi' : 'en'
+
+  const LANGS = [
+    ['en', 'EN', basePath],
+    ['vi', 'VI', `${basePath}/vn`],
+  ]
 
   return (
     <div style={css('position:fixed;inset:0;background:#fff;font-family:var(--font-sans);')}>
       <iframe
         key={code}
-        src={SRC[code]}
-        title="Herond Ads — Business Model"
+        src={`${srcDir}/${code}.html`}
+        title={title}
         style={css('width:100%;height:100%;border:none;display:block;')}
       />
 

@@ -21,6 +21,14 @@ const CHOICES = [
     desc: 'How Herond Ads works — the B2B2C advertising model for Web3, end to end.',
     accent: 'linear-gradient(135deg,#6b33fa,#ff4070)',
   },
+  {
+    to: '/action_plan',
+    icon: 'clipboard-list',
+    eyebrow: 'Deck',
+    title: 'Diagnosis & Plan',
+    desc: 'Retention diagnosis and the six-month roadmap — activation and Herond Point.',
+    accent: 'linear-gradient(135deg,#00b3ED,#00CCC0)',
+  },
 ]
 
 export default function Landing() {
@@ -47,7 +55,7 @@ export default function Landing() {
         </span>
       </div>
 
-      <div style={css('position:relative;z-index:1;width:100%;max-width:880px;animation:fadeUp .5s ease both;')}>
+      <div style={css('position:relative;z-index:1;width:100%;max-width:1020px;animation:fadeUp .5s ease both;')}>
         <div style={css('text-align:center;margin-bottom:38px;')}>
           <div className="ov" style={css('color:var(--herond-blue-sky);margin-bottom:14px;')}>
             Web3 Advertising Console
@@ -65,7 +73,7 @@ export default function Landing() {
           </p>
         </div>
 
-        <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:20px;')}>
+        <div style={css('display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;')}>
           {CHOICES.map((c) => (
             <button
               key={c.to}
