@@ -1,8 +1,18 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import css from '../css.js'
 import Icon from '../Icon.jsx'
 
 const LOGO = '/assets/logo-glyph.png'
+
+// Warm the browser cache for the decks while the user is on the chooser,
+// so the first open (and its language toggle) is instant.
+const PREFETCH = [
+  '/business-model/en.html',
+  '/business-model/vi.html',
+  '/action-plan/en.html',
+  '/action-plan/vi.html',
+]
 
 const CHOICES = [
   {
@@ -33,6 +43,18 @@ const CHOICES = [
 
 export default function Landing() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const links = PREFETCH.map((href) => {
+      const link = document.createElement('link')
+      link.rel = 'prefetch'
+      link.as = 'document'
+      link.href = href
+      document.head.appendChild(link)
+      return link
+    })
+    return () => links.forEach((l) => l.remove())
+  }, [])
 
   return (
     <div
